@@ -5,9 +5,10 @@ import jakarta.persistence.Transient;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+@Entity
 public class Book {
-
+    @Id
+    @GeneratedValue
     private Long id;
     private String title;
     private long isbn;
@@ -15,7 +16,7 @@ public class Book {
     private short year;
     private Language language;
 
-    @Transient
+    @ManyToMany(mappedBy = "books")
     private Set<Author> authors;
 
     public Long getId() {
