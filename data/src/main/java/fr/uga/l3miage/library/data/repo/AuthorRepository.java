@@ -39,10 +39,10 @@ public class AuthorRepository implements CRUDRepository<Long, Author> {
      *
      * @return une liste d'auteurs trié par nom
      */
-    @Override
+   @Override
     public List<Author> all() {
-        // TODO
-        return null;
+        String getAll = "select a from Authors a orderby a.fullName";
+        return entityManager.createNamedQuery(getAll, Author.class).getResultList();
     }
 
     /**
@@ -52,8 +52,10 @@ public class AuthorRepository implements CRUDRepository<Long, Author> {
      * @return une liste d'auteurs trié par nom
      */
     public List<Author> searchByName(String namePart) {
-        // TODO
-        return null;
+        String getSearchByName = "select a from Author a where a.fullName = :name";
+        return entityManager.createNamedQuery(getSearchByName, Author.class)
+                .setParameter("name", namePart)
+                .getResultList();
     }
 
     /**
@@ -62,8 +64,12 @@ public class AuthorRepository implements CRUDRepository<Long, Author> {
      * @return true si l'auteur partage
      */
     public boolean checkAuthorByIdHavingCoAuthoredBooks(long authorId) {
-        // TODO
-        return false;
+        String jpql = "select a.fullName, count(distinct ba.id) > 1 from Author a join Author ba on a.id = ba.id group by a.fullName where a.id = :Id ";
+        List<Author> authors= entityManager.createNamedQuery(jpql, Author.class)
+        .setParameter("Id", authorId)
+        .getResultList();
+
+        return !(authors.isEmpty());
     }
 
 }
