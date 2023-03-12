@@ -4,11 +4,20 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OrderBy;
+
+@Entity
 
 public class Author {
 
     private Long id;
     private String fullName;
+    @ManyToMany(mappedBy = "authors")
+    @OrderBy("fullName")
     private Set<Book> books;
 
     public Long getId() {
